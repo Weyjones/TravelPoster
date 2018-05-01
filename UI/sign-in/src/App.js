@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-
-import { withAuthenticator } from 'aws-amplify-react';
-
 import Amplify from 'aws-amplify';
+import { Auth } from 'aws-amplify';
 import aws_exports from './aws-exports';
 
 Amplify.configure(aws_exports);
@@ -13,7 +10,7 @@ Amplify.configure(aws_exports);
 
 class SignIn extends Component {
   render() {
-    return this.props.show == "SignIn" ? (
+    return (
       <div>
         <form id="login">
           <div>
@@ -33,41 +30,143 @@ class SignIn extends Component {
         </form>
 
       </div>
-    ) : null;
+    );
   }
 }
 
 class SignUp extends Component {
-  
-  render() {
-    return this.props.show == "SignUp" ? (
+  constructor(props) {
+    super(props);
+    this.state = {
+      Username: '',
+      Email:'',
+      Password:'',
+      errorMSG:'',
+      ComfirmCode: '',
+      needComfirm: false
+    };
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.hendleComfirm = this.hendleComfirm.bind(this);
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    let username = this.state.Username;
+    let password = this.state.Password;
+    let email = this.state.Email;
+    Auth.signUp({
+      username,
+      password,
+      attributes: {
+          email,          
+      },
+      validationData: []  
+  })
+  .then(data => {
+    console.log(data);
+    this.setState({
+      errorMSG: ""
+    })
+    this.setState({needComfirm: true})
+  })
+  .catch(err => {
+    console.log(err);
+    if(err.code === "UsernameExistsException"){
+      this.setState({
+        errorMSG: "*This username already exists, please try another username."
+      })
+    }else if(err.code === "InvalidPasswordException" || err.code === "InvalidParameterException"){
+      this.setState({
+        errorMSG: "*Password Invalid, please try another password."
+      })
+    }else{
+      this.setState({
+        errorMSG: err.message
+      })
+    }
+  });
+    
+  }
+
+  hendleComfirm(event) {
+    event.preventDefault();
+    let code = this.state.ComfirmCode;
+    let username = this.state.Username;
+    Auth.confirmSignUp(username, code)
+    .then(data => {
+      console.log(data);
+      this.setState({
+        errorMSG: ""
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      this.setState({
+        errorMSG: err.message
+      })
+    });
+  }
+
+  renderSignUpForm() {
+    return (
       <div>
-        <form id="register">
+        <form id="register" onSubmit={this.handleSubmit}>
           <div>
             <h1>REGISTER</h1>
           </div>
           <div>
-            <input type="text" placeholder="Username" name="username"/>
+            <input type="text" placeholder="Username" value={this.state.Username} onChange={event => this.setState({Username: event.target.value})}/>
           </div>
           <div>
-            <input type="email" placeholder="Email" name="email"/>
+            <input type="email" placeholder="Email" value={this.state.Email} onChange={event => this.setState({Email: event.target.value})}/>
           </div>
           <div>
-            <input type="password" placeholder="Password" name="password"/>
+            <input type="password" placeholder="Password" value={this.state.Password} onChange={event => this.setState({Password: event.target.value})}/>
           </div>
+          <div>{this.state.errorMSG}</div>
           <div>
             <input type="submit" value="REGISTER"/>
           </div>
           <button onClick={() => this.props.onClick("SignIn")}>Back to login</button>
         </form>
       </div>
-    ) : null;
+    );
+  }
+
+  renderConfirmationForm() {
+    return (
+      <div>
+        <form id="registerComfirm" onSubmit={this.hendleComfirm}>
+          <div>
+            <h1>Please check your email for the Confirmation Code.</h1>
+          </div>
+          <div>
+            <input type="text" placeholder="Confirmation Code" value={this.state.ComfirmCode} onChange={event => this.setState({ComfirmCode: event.target.value})}/>
+          </div>
+          <div>{this.state.errorMSG}</div>
+          <div>
+            <input type="submit" value="SUBMIT"/>
+          </div>
+          <button onClick={() => this.props.onClick("SignIn")}>Back to login</button>
+        </form>
+      </div>
+    );
+  }
+
+  render() {
+    return (
+      <div>
+        {this.state.needComfirm 
+          ? this.renderConfirmationForm() 
+          : this.renderSignUpForm()}
+      </div>
+    );
   }
 }
 
 class Forget extends Component {
   render() {
-    return this.props.show == "Forget" ? (
+    return (
       <div>
         <form id="forgot">
           <div>
@@ -84,7 +183,7 @@ class Forget extends Component {
           </div>
         </form>
       </div>
-    ) : null;
+    );
   }
 }
 
@@ -97,7 +196,18 @@ class App extends Component {
       show: "SignIn"
     };
   }
-
+  switchFrom() {
+    switch(this.state.show) {
+      case 'Forget':
+        return <Forget onClick={(i) => this.handleClick(i)}/>;
+      case 'SignUp':
+        return <SignUp onClick={(i) => this.handleClick(i)}/>;
+      case 'SignIn':
+        return <SignIn onClick={(i) => this.handleClick(i)}/>;
+      default:
+        return <SignIn onClick={(i) => this.handleClick(i)}/>;
+    }
+  }
   handleClick(i) {
     this.setState({
       show: i
@@ -106,9 +216,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <SignIn show={this.state.show} onClick={(i) => this.handleClick(i)}/>
-        <SignUp show={this.state.show} onClick={(i) => this.handleClick(i)}/>
-        <Forget show={this.state.show} onClick={(i) => this.handleClick(i)}/>
+        {this.switchFrom()}
       </div>
     );
   }
