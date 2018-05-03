@@ -19,11 +19,18 @@ class App extends Component {
       case 'SignUp':
         return <SignUp onClick={(i) => this.handleClick(i)}/>;
       case 'SignIn':
-        return <SignIn onClick={(i) => this.handleClick(i)}/>;
+        return <SignIn isAuth={this.state.isAuth} logined={(i) => this.logined(i)} onClick={(i) => this.handleClick(i)}/>;
       default:
-        return <SignIn onClick={(i) => this.handleClick(i)}/>;
+        return <SignIn isAuth={this.state.isAuth} logined={(i) => this.logined(i)} onClick={(i) => this.handleClick(i)}/>;
     }
   }
+
+  logined(i){
+    this.setState({
+      isAuth: i
+    });
+  }
+
   handleClick(i) {
     this.setState({
       show: i
