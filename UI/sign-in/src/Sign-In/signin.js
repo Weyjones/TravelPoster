@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Amplify from 'aws-amplify';
 import { Auth } from 'aws-amplify';
 import aws_exports from '../aws-exports';
+import SignOut from '../Sign-Out/signout'
 
 Amplify.configure(aws_exports);
 
@@ -27,6 +28,7 @@ class SignIn extends Component {
         this.setState({
           errorMSG: ""
         });
+        this.props.logined(true);
         console.log(Auth.currentSession());     
       })
       .catch(err => {
@@ -36,9 +38,9 @@ class SignIn extends Component {
       });
   
     }
-  
-    render() {
-      return (
+
+    renderSignInForm(){
+      return (        
         <div>
           <form id="login" onSubmit={this.handleSubmit}>
             <div>
@@ -57,8 +59,16 @@ class SignIn extends Component {
             <button onClick={() => this.props.onClick("Forget")}>Forget password</button>
             <button onClick={() => this.props.onClick("SignUp")}>Creat account</button>
           </form>
-  
+
         </div>
+      );
+    }
+  
+    render() {
+      return (
+        this.props.isAuth
+        ? <SignOut logined={(i) => this.props.logined(i)}/> 
+        : this.renderSignInForm()
       );
     }
 }
