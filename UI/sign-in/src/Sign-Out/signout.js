@@ -12,10 +12,6 @@ class SignOut extends Component {
           username: '',
           errorMSG:''
         };
-    }
-  
-    render(){
-        let user = Auth.currentAuthenticatedUser();
         Auth.currentUserInfo()
         .then(data => {
             this.setState({
@@ -23,7 +19,9 @@ class SignOut extends Component {
             })
         })
         .catch(err => console.log('error: ', err));
-
+    }
+  
+    render(){
         return(
             <div>
                 <h1>Welcome, {this.state.username}</h1>
