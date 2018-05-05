@@ -6,9 +6,29 @@ import aws_exports from '../aws-exports';
 Amplify.configure(aws_exports);
 
 class SignOut extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+          username: '',
+          errorMSG:''
+        };
+    }
+  
     render(){
+        let user = Auth.currentAuthenticatedUser();
+        Auth.currentUserInfo()
+        .then(data => {
+            this.setState({
+            username: data.username
+            })
+        })
+        .catch(err => console.log('error: ', err));
+
         return(
-            <button onClick={() => this.Signout()}>Sign Out</button>
+            <div>
+                <h1>Welcome, {this.state.username}</h1>
+                <button onClick={() => this.Signout()}>Sign Out</button>
+            </div>
         );
     }
 
