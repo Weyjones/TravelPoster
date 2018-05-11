@@ -1,0 +1,56 @@
+.forms {
+    background: url(http://www.kinyu-z.net/data/wallpapers/35/823942.jpg) center fixed;
+    background-size: cover;
+    border-radius: 5px;
+    width: 400px;
+    margin: auto;
+    padding: 20px;
+    box-shadow: inset 0 0 0 300px rgba(0, 0, 0, 0.5);
+}
+
+.formHead {
+    padding-bottom: 15px;
+    text-align: center;
+}
+
+.formDiv {
+    padding: 15px;
+}
+
+.formDiv input[type="text"], .formDiv input[type="email"], .formDiv input[type="password"]{
+    background: transparent;
+    border: none;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.4);
+    padding: 15px;
+    font-weight: 500;
+    color: #fff;
+    transition: 0.2s ease;
+}
+
+.formDiv input[type="submit"] {
+    width: 100%;
+    padding: 10px 0;
+    color: #fff;
+    font-weight: 500;
+    border: none;
+    background: cadetblue;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+.formOther {
+    display: flex;
+}
+.formOther a {
+    width: 50%;
+    color: #fff;
+    text-decoration: none;
+    font-size: 10px;
+    opacity: 0.5;
+    font-weight: 700;
+    text-align: center;
+    transition: 0.2s ease;
+}
+
