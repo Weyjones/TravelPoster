@@ -43,6 +43,8 @@ class SignIn extends Component {
     renderSignInForm(){
       return (        
         <div className="forms">
+          <div className="blur">
+          </div>
           <form id="login" onSubmit={this.handleSubmit}>
             <div className="formHead">
               <h1>SIGN IN</h1>
