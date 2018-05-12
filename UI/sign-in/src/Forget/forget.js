@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Amplify from 'aws-amplify';
 import { Auth } from 'aws-amplify';
 import aws_exports from '../aws-exports';
+import '../CSS/forms.css';
 
 Amplify.configure(aws_exports);
 
@@ -55,26 +56,26 @@ class Forget extends Component {
   }
   resetForm(){
     return (
-      <div>
-        <form id="reset" onSubmit={this.handleReset}>
-          <div>
-            <div>
-              <h1>Please use the code we send to your register email to reset you password</h1>
-            </div>
-            <div>
-              <input type="text" placeholder="Enter Username again" value={this.state.Username} onChange={event => this.setState({Username: event.target.value})}/>
-            </div>
-            <div>
-              <input type="text" placeholder="Password reset code" value={this.state.code} onChange={event => this.setState({code: event.target.value})}/>
-            </div>
-            <div>
-              <input type="password" placeholder="New Password" value={this.state.newPass} onChange={event => this.setState({newPass: event.target.value})}/>
-            </div>
-            <div>
-              <input type="submit" value="Submit"/>
-            </div>
-            <div>{this.state.errorMSG}</div>
-            <button onClick={() => this.props.onClick("SignIn")}>Back to login</button>
+      <div className="forms">
+        <form id="reset" onSubmit={this.handleReset}>      
+          <div className="formHead">
+            <p>Please use the code we send to your register email to reset you password</p>
+          </div>
+          <div className="formDiv">
+            <input type="text" placeholder="Enter Username again" value={this.state.Username} onChange={event => this.setState({Username: event.target.value})}/>
+          </div>
+          <div className="formDiv">
+            <input type="text" placeholder="Password reset code" value={this.state.code} onChange={event => this.setState({code: event.target.value})}/>
+          </div>
+          <div className="formDiv">
+            <input type="password" placeholder="New Password" value={this.state.newPass} onChange={event => this.setState({newPass: event.target.value})}/>
+          </div>
+          <div className="errMSG">{this.state.errorMSG}</div>
+          <div className="formDiv">
+            <input type="submit" value="Submit"/>
+          </div>
+          <div className="formOther">
+            <a onClick={() => this.props.onClick("SignIn")}>Back to login</a>
           </div>
         </form>
       </div>
@@ -82,20 +83,20 @@ class Forget extends Component {
   }
   forgetForm(){
     return (
-      <div>
+      <div className="forms">
         <form id="forgot" onSubmit={this.handleSubmit}>
-          <div>
-            <div>
-              <h1>FORGOT PASSWORD?</h1>
-            </div>
-            <div>
-              <input type="text" placeholder="Type your username" value={this.state.Username} onChange={event => this.setState({Username: event.target.value})}/>
-            </div>
-            <div>
-              <input type="submit" value="Submit"/>
-            </div>
-            <div>{this.state.errorMSG}</div>
-            <button onClick={() => this.props.onClick("SignIn")}>Back to login</button>
+          <div  className="formHead">
+            <h1>FORGOT PASSWORD?</h1>
+          </div>
+          <div className="formDiv">
+            <input type="text" placeholder="Type your username" value={this.state.Username} onChange={event => this.setState({Username: event.target.value})}/>
+          </div>
+          <div className="formDiv">
+            <input type="submit" value="Submit"/>
+          </div>
+          <div>{this.state.errorMSG}</div>
+          <div className="formOther">
+            <a onClick={() => this.props.onClick("SignIn")}>Back to login</a>
           </div>
         </form>
       </div>
