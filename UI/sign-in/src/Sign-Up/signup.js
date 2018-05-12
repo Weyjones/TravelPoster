@@ -80,25 +80,27 @@ class SignUp extends Component {
   
     renderSignUpForm() {
       return (
-        <div>
+        <div className="forms">
           <form id="register" onSubmit={this.handleSubmit}>
-            <div>
+            <div className="formHead">
               <h1>REGISTER</h1>
             </div>
-            <div>
+            <div className="formDiv">
               <input type="text" placeholder="Username" value={this.state.Username} onChange={event => this.setState({Username: event.target.value})}/>
             </div>
-            <div>
+            <div className="formDiv">
               <input type="email" placeholder="Email" value={this.state.Email} onChange={event => this.setState({Email: event.target.value})}/>
             </div>
-            <div>
+            <div className="formDiv">
               <input type="password" placeholder="Password" value={this.state.Password} onChange={event => this.setState({Password: event.target.value})}/>
             </div>
             <div>{this.state.errorMSG}</div>
-            <div>
+            <div className="formDiv">
               <input type="submit" value="REGISTER"/>
             </div>
-            <button onClick={() => this.props.onClick("SignIn")}>Back to login</button>
+            <div className="formOther">
+              <a onClick={() => this.props.onClick("SignIn")}>Back to login</a>
+            </div>
           </form>
         </div>
       );

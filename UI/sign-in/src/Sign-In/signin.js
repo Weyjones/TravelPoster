@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Amplify from 'aws-amplify';
 import { Auth } from 'aws-amplify';
 import aws_exports from '../aws-exports';
-import SignOut from '../Sign-Out/signout'
+import SignOut from '../Sign-Out/signout';
+import '../CSS/forms.css';
 
 Amplify.configure(aws_exports);
 
@@ -41,23 +42,28 @@ class SignIn extends Component {
 
     renderSignInForm(){
       return (        
-        <div>
+        <div className="forms">
+          <div className="blur">
+          </div>
           <form id="login" onSubmit={this.handleSubmit}>
-            <div>
+            <div className="formHead">
               <h1>SIGN IN</h1>
             </div>
-            <div>
+            <div className="formDiv">
               <input type="text" placeholder="Username" value={this.state.Username} onChange={event => this.setState({Username: event.target.value})}/>
             </div>
-            <div>
+            <div className="formDiv">
               <input type="password" placeholder="Password" value={this.state.Password} onChange={event => this.setState({Password: event.target.value})}/>
             </div>
-            <div>{this.state.errorMSG}</div>
-            <div>
+            <div className="errMSG">{this.state.errorMSG}</div>
+            <div className="formDiv">
               <input type="submit" value="LOGIN"/>
             </div>
-            <button onClick={() => this.props.onClick("Forget")}>Forget password</button>
-            <button onClick={() => this.props.onClick("SignUp")}>Creat account</button>
+            <div className="formOther">
+              <a onClick={() => this.props.onClick("Forget")}>Forget password</a>
+              <a onClick={() => this.props.onClick("SignUp")}>Creat account</a>
+            </div>
+
           </form>
 
         </div>
